@@ -6,6 +6,8 @@ using System.IO;
 using Tekla.Structures.Dialog;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures;
+using System.Linq;
+
 
 
 namespace PadFootingCreator
@@ -406,6 +408,56 @@ namespace PadFootingCreator
 
         private void LoadColumnSettings_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+
+            if (MyModel.GetConnectionStatus())
+            {
+
+                if (!ValidateInputs())
+                {
+                    return;
+                }
+
+                double spacingX = double.Parse(SpacingXInput.Text);
+                double spacingY = double.Parse(SpacingYInput.Text);
+                int numPadsX = int.Parse(NumPadsXInput.Text);
+                int numPadsY = int.Parse(NumPadsYInput.Text);
+                double height = 0; // Height is set to 0
+
+                // Create the CoordinateX and CoordinateY strings using the variables
+                string coordinateX = string.Join(" ", Enumerable.Range(0, numPadsX).Select(i => (i * spacingX).ToString("0.00")));
+                string coordinateY = string.Join(" ", Enumerable.Range(0, numPadsY).Select(i => (i * spacingY).ToString("0.00")));
+
+                Grid objGrid = new Grid
+                {
+                    Name = "Grid",
+                    CoordinateX = coordinateX,
+                    CoordinateY = coordinateY,
+                    CoordinateZ = "0.00 6000.00 8000.00 9000.00", // Keeping CoordinateZ unchanged
+                    LabelX = "A B C D E",
+                    LabelY = "1 2 3 4 5 6",
+                    LabelZ = "+0 +6000 +8000 +9000",
+                    ExtensionLeftX = 1000.0,
+                    ExtensionLeftY = 1000.0,
+                    ExtensionLeftZ = 1000.0,
+                    ExtensionRightX = 1000.0,
+                    ExtensionRightY = 1000.0,
+                    ExtensionRightZ = 1000.0,
+                    IsMagnetic = false
+                };
+
+                // Commit the grid object to the model
+                bool result = objGrid.Insert();
+                MyModel.CommitChanges();
+
+
+            }
+
 
         }
     }

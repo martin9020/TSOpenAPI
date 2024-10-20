@@ -63,6 +63,7 @@ namespace PadFootingCreator
             this.ColumnSettingsLabel = new System.Windows.Forms.Label();
             this.BeamSettingsLabel = new System.Windows.Forms.Label();
             this.LabelOptions = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SpacingXInput
@@ -443,12 +444,23 @@ namespace PadFootingCreator
             this.LabelOptions.TabIndex = 33;
             this.LabelOptions.Text = "Some Settings and options here";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(387, 282);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(112, 46);
+            this.button1.TabIndex = 34;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(36)))), ((int)(((byte)(57)))));
             this.ClientSize = new System.Drawing.Size(1135, 445);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.LabelOptions);
             this.Controls.Add(this.BeamSettingsLabel);
             this.Controls.Add(this.ColumnSettingsLabel);
@@ -525,6 +537,7 @@ namespace PadFootingCreator
         private Label ColumnSettingsLabel;
         private Label BeamSettingsLabel;
         private Label LabelOptions;
+        private Button button1;
     }
 }
 
