@@ -215,25 +215,27 @@ namespace PadFootingCreator
                 int numPadsY = int.Parse(NumPadsYInput.Text);
                 double height = double.Parse(HeightInput.Text);
 
-                for (int i = 0; i < numPadsX; i++)
+                for (int x = 0; x < numPadsX; x++)
                 {
-                    double PositionX = i * spacingX;
-                    if (i == 0 || i == numPadsX - 1)
+                    double PositionX = x * spacingX;
+                    if (x == 0 || x == numPadsX - 1)
                     {
-                        for (int j = 0; j < numPadsY; j++)
+                        for (int y = 0; y < numPadsY; y++)
                         {
-                            double PositionY = j * spacingY;
+                            double PositionY = y * spacingY;
                             CreatePadFooting(PositionX, PositionY);
                             CreateColumn(PositionX, PositionY, height);
 
-                            // Create beams along Y direction
-                            if (i == 0 && j < numPadsY - 1 && numPadsY != 2)
+                            if (numPadsY != 2) // Create beams along Y direction if numPadsY != 2
                             {
-                                CreateBeam(PositionX, PositionY, PositionX, PositionY + spacingY, height);
-                            }
-                            else if (i == numPadsX - 1 && j > 0 && numPadsY != 2)
-                            {
-                                CreateBeam(PositionX, PositionY, PositionX, PositionY - spacingY, height);
+                                if (x == 0 && y < numPadsY - 1)
+                                {
+                                    CreateBeam(PositionX, PositionY, PositionX, PositionY + spacingY, height);
+                                }
+                                else if (x == numPadsX - 1 && y > 0)
+                                {
+                                    CreateBeam(PositionX, PositionY, PositionX, PositionY - spacingY, height);
+                                }
                             }
                         }
                     }
@@ -245,7 +247,7 @@ namespace PadFootingCreator
                         CreateColumn(PositionX, (numPadsY - 1) * spacingY, height);
 
                         // Create beams along X direction if numPadsX > 2
-                        if (i < numPadsX - 1 && numPadsX != 2)
+                        if (x < numPadsX - 1 && numPadsX != 2)
                         {
                             CreateBeam(PositionX, 0.0, PositionX + spacingX, 0.0, height);
                             CreateBeam(PositionX, (numPadsY - 1) * spacingY, PositionX + spacingX, (numPadsY - 1) * spacingY, height);
@@ -256,14 +258,42 @@ namespace PadFootingCreator
                 // Special case for the first beam if numPadsX > 2
                 if (numPadsX != 2)
                 {
+                    // Create the missing beam from 0,0 to the first spacing along X direction
                     CreateBeam(0.0, 0.0, spacingX, 0.0, height);
+
+                    // Extend the first beams negatively by -140mm along X direction
+                    ExtendBeamEnd(-140.0, 0.0, 0.0, 0.0, height);
+                    ExtendBeamEnd(-140.0, (numPadsY - 1) * spacingY, 0.0, (numPadsY - 1) * spacingY, height);
+
                     // Special case for the last beam
                     CreateBeam(0.0, (numPadsY - 1) * spacingY, spacingX, (numPadsY - 1) * spacingY, height);
+                }
+
+                // Extend the very last beams along Y direction by 140mm if numPadsY > 2
+                if (numPadsY > 2)
+                {
+                    ExtendBeamEnd((numPadsX - 1) * spacingX, (numPadsY - 1) * spacingY, (numPadsX - 1) * spacingX, (numPadsY - 1) * spacingY + 140.0, height);
+                    ExtendBeamEnd(0.0, (numPadsY - 1) * spacingY, 0.0, (numPadsY - 1) * spacingY + 140.0, height);
+                }
+
+                // Extend the very last beams along X direction by 140mm if numPadsX > 2
+                if (numPadsX > 2)
+                {
+                    ExtendBeamEnd((numPadsX - 1) * spacingX, 0.0, (numPadsX - 1) * spacingX + 140.0, 0.0, height);
+                    ExtendBeamEnd((numPadsX - 1) * spacingX, (numPadsY - 1) * spacingY, (numPadsX - 1) * spacingX + 140.0, (numPadsY - 1) * spacingY, height);
                 }
 
                 MyModel.CommitChanges();
             }
         }
+
+        // Function to extend an existing beam
+        private void ExtendBeamEnd(double startX, double startY, double endX, double endY, double height)
+        {
+            // Extend the existing beam by adjusting its end point
+            CreateBeam(startX, startY, endX, endY, height);
+        }
+
 
 
         private void ExecuteOption2()
