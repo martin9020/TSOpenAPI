@@ -202,7 +202,7 @@ namespace PadFootingCreator
             this.JobPostCodeText.Name = "JobPostCodeText";
             this.JobPostCodeText.Size = new System.Drawing.Size(102, 30);
             this.JobPostCodeText.TabIndex = 15;
-            this.JobPostCodeText.Text = "ME168BE";
+            this.JobPostCodeText.Text = "PostCode";
             this.JobPostCodeText.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // JobBuilderText
@@ -213,7 +213,7 @@ namespace PadFootingCreator
             this.JobBuilderText.Name = "JobBuilderText";
             this.JobBuilderText.Size = new System.Drawing.Size(214, 30);
             this.JobBuilderText.TabIndex = 14;
-            this.JobBuilderText.Text = "Maidstone Hospital";
+            this.JobBuilderText.Text = "ProjectName";
             // 
             // LabelJobName
             // 
@@ -236,7 +236,7 @@ namespace PadFootingCreator
             this.JobNameText.Name = "JobNameText";
             this.JobNameText.Size = new System.Drawing.Size(214, 30);
             this.JobNameText.TabIndex = 12;
-            this.JobNameText.Text = "Maidstone Hospital";
+            this.JobNameText.Text = "ProjectName";
             // 
             // LabelJobNumber
             // 
@@ -282,7 +282,7 @@ namespace PadFootingCreator
             this.JobDesignerText.Name = "JobDesignerText";
             this.JobDesignerText.Size = new System.Drawing.Size(72, 30);
             this.JobDesignerText.TabIndex = 18;
-            this.JobDesignerText.Text = "MV/GCR/GMC";
+            this.JobDesignerText.Text = "DesignerName";
             // 
             // LabelInfo1
             // 
@@ -328,7 +328,7 @@ namespace PadFootingCreator
             this.JobDescription.Name = "JobDescription";
             this.JobDescription.Size = new System.Drawing.Size(312, 30);
             this.JobDescription.TabIndex = 24;
-            this.JobDescription.Text = "MV/GCR/GMC";
+            this.JobDescription.Text = "JobDescription";
             // 
             // LabelHeight
             // 
