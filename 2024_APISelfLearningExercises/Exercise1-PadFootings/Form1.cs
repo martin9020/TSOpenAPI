@@ -10,6 +10,7 @@ namespace PadFootingCreator
 {
     public partial class Form1 : Form
     {
+        
         private readonly Dictionary<string, Action> optionActions;
         public Form1()
         {
@@ -29,7 +30,7 @@ namespace PadFootingCreator
             { "Option 1", ExecuteOption1 },
             { "Option 2", ExecuteOption2 }
         };
-
+            this.BackColor = System.Drawing.Color.FromArgb(29, 36, 57);
         }
 
         private readonly Model MyModel;
