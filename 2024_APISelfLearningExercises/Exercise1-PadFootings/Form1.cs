@@ -48,33 +48,68 @@ namespace PadFootingCreator
                         { "Option 1", ExecuteOption1 },
                         { "Option 2", ExecuteOption2 }
                     };
-
-
+            // Add .clm files to the ComboBox
+            //MessageBox.Show($"XS_FIRM Path: {xsFirmPath}");
+            //MessageBox.Show($"XS_FIRM Path: {modelFolder}");
             //string clmDirectory = @"C:\TeklaStructuresModels\New model 2\attributes";
             string xsFirmPath = "";
             TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref xsFirmPath);
-            //MessageBox.Show($"XS_FIRM Path: {xsFirmPath}");
-            string modelFolder = MyModel.GetInfo().ModelPath;
-            //MessageBox.Show($"XS_FIRM Path: {modelFolder}");
-            string clmDirectory = Path.Combine(modelFolder, "attributes");
-            MessageBox.Show($"CLM Directory: {clmDirectory}");
-            // Add .clm files to the ComboBox
 
-            string[] allFiles = Directory.GetFiles(clmDirectory);
-            //MessageBox.Show($"Number of files found: {allFiles.Length}");
-            foreach (string file in allFiles)
+            string clmDirectory;
+            if (string.IsNullOrWhiteSpace(xsFirmPath))
             {
-                string fileName = Path.GetFileName(file);
-                //MessageBox.Show($"File  found: {fileName}");
-                if (file.EndsWith(".clm"))
-                {
-                  
-                    LoadColumnSettings.Items.Add(fileName);
-                }
+                string modelFolder = MyModel.GetInfo().ModelPath;
+                clmDirectory = Path.Combine(modelFolder, "attributes");
 
-
-
+                MessageBox.Show("Using model folder attributes path.");
             }
+            else
+            {
+                clmDirectory = xsFirmPath;
+            }
+
+            if (Directory.Exists(clmDirectory))
+            {
+                try
+                {
+                    string[] allFiles = Directory.GetFiles(clmDirectory);
+                    foreach (string file in allFiles)
+                    {
+                        string fileName = Path.GetFileName(file);
+                        if (file.EndsWith(".clm"))
+                        {
+                            LoadColumnSettings.Items.Add(Path.GetFileNameWithoutExtension(fileName));
+                        }
+                        else if (file.EndsWith(".prt"))
+                        {
+                            LoadBeamSettings.Items.Add(Path.GetFileNameWithoutExtension(fileName));
+                        }
+                    }
+
+                    if (LoadColumnSettings.Items.Count > 0)
+                    {
+                        LoadColumnSettings.SelectedIndex = 0;
+                    }
+                    if (LoadBeamSettings.Items.Count > 0)
+                    {
+                        LoadBeamSettings.SelectedIndex = 0;
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error accessing files: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show($"Directory not found: {clmDirectory}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(0);
+            }
+
+
+
 
             // Set the background color of the form 
 
@@ -179,6 +214,7 @@ namespace PadFootingCreator
                 int numPadsX = int.Parse(NumPadsXInput.Text);
                 int numPadsY = int.Parse(NumPadsYInput.Text);
                 double height = double.Parse(HeightInput.Text);
+
                 for (int i = 0; i < numPadsX; i++)
                 {
                     double PositionX = i * spacingX;
@@ -189,12 +225,13 @@ namespace PadFootingCreator
                             double PositionY = j * spacingY;
                             CreatePadFooting(PositionX, PositionY);
                             CreateColumn(PositionX, PositionY, height);
+
                             // Create beams along Y direction
-                            if (i == 0 && j < numPadsY - 1)
+                            if (i == 0 && j < numPadsY - 1 && numPadsY != 2)
                             {
                                 CreateBeam(PositionX, PositionY, PositionX, PositionY + spacingY, height);
                             }
-                            else if (i == numPadsX - 1 && j > 0)
+                            else if (i == numPadsX - 1 && j > 0 && numPadsY != 2)
                             {
                                 CreateBeam(PositionX, PositionY, PositionX, PositionY - spacingY, height);
                             }
@@ -206,21 +243,28 @@ namespace PadFootingCreator
                         CreatePadFooting(PositionX, (numPadsY - 1) * spacingY);
                         CreateColumn(PositionX, 0.0, height);
                         CreateColumn(PositionX, (numPadsY - 1) * spacingY, height);
-                        // Create beams along X direction
-                        if (i < numPadsX - 1)
+
+                        // Create beams along X direction if numPadsX > 2
+                        if (i < numPadsX - 1 && numPadsX != 2)
                         {
                             CreateBeam(PositionX, 0.0, PositionX + spacingX, 0.0, height);
                             CreateBeam(PositionX, (numPadsY - 1) * spacingY, PositionX + spacingX, (numPadsY - 1) * spacingY, height);
                         }
                     }
                 }
-                // Special case for the first beam
-                CreateBeam(0.0, 0.0, spacingX, 0.0, height);
-                // Special case for the last beam
-                CreateBeam(0.0, (numPadsY - 1) * spacingY, spacingX, (numPadsY - 1) * spacingY, height);
+
+                // Special case for the first beam if numPadsX > 2
+                if (numPadsX != 2)
+                {
+                    CreateBeam(0.0, 0.0, spacingX, 0.0, height);
+                    // Special case for the last beam
+                    CreateBeam(0.0, (numPadsY - 1) * spacingY, spacingX, (numPadsY - 1) * spacingY, height);
+                }
+
                 MyModel.CommitChanges();
             }
         }
+
 
         private void ExecuteOption2()
         {
@@ -330,8 +374,9 @@ namespace PadFootingCreator
 
         }
 
+        private void LoadColumnSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
-
-
+        }
     }
 }
