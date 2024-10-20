@@ -239,7 +239,7 @@ namespace Exercise
         /// <param name="PositionX">X-coordination of the position</param>
         /// <param name="PositionY">Y-coordination of the position</param>
         /// <returns></returns>
-private static Beam CreateColumn(double PositionX, double PositionY, string ColumnProfile)
+        private static Beam CreateColumn(double PositionX, double PositionY, string ColumnProfile)
         {
             Beam Column = new Beam();
 
@@ -313,6 +313,9 @@ private static Beam CreateColumn(double PositionX, double PositionY, string Colu
             SetAttributeValue(ColumnsProfileTextBox, profileCatalog1.SelectedProfile);
         }
 
-        
+        private void profileCatalog1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -1,6 +1,8 @@
+using System.Windows.Forms;
+
 namespace PadFootingCreator
 {
-    partial class Form1
+    partial class Form1 : Form
     {
         /// <summary>
         /// Required designer variable.
@@ -19,6 +21,7 @@ namespace PadFootingCreator
             }
             base.Dispose(disposing);
         }
+
 
         #region Windows Form Designer generated code
 
@@ -55,6 +58,8 @@ namespace PadFootingCreator
             this.HeightInput = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.CreatePadFootingButton = new System.Windows.Forms.Button();
+            this.profileCatalog1 = new Tekla.Structures.Dialog.UIControls.ProfileCatalog();
+            this.LoadColumnSettings = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // SpacingXInput
@@ -357,7 +362,7 @@ namespace PadFootingCreator
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(990, 42);
+            this.comboBox1.Location = new System.Drawing.Point(1004, 24);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(102, 33);
@@ -379,12 +384,33 @@ namespace PadFootingCreator
             this.CreatePadFootingButton.UseVisualStyleBackColor = false;
             this.CreatePadFootingButton.Click += new System.EventHandler(this.Execute_OnButtonclick);
             // 
+            // profileCatalog1
+            // 
+            this.profileCatalog1.BackColor = System.Drawing.Color.Transparent;
+            this.profileCatalog1.ButtonText = "albl_Select__";
+            this.profileCatalog1.Location = new System.Drawing.Point(990, 301);
+            this.profileCatalog1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.profileCatalog1.Name = "profileCatalog1";
+            this.profileCatalog1.SelectedProfile = "";
+            this.profileCatalog1.Size = new System.Drawing.Size(128, 29);
+            this.profileCatalog1.TabIndex = 28;
+            // 
+            // LoadColumnSettings
+            // 
+            this.LoadColumnSettings.FormattingEnabled = true;
+            this.LoadColumnSettings.Location = new System.Drawing.Point(795, 364);
+            this.LoadColumnSettings.Name = "LoadColumnSettings";
+            this.LoadColumnSettings.Size = new System.Drawing.Size(116, 33);
+            this.LoadColumnSettings.TabIndex = 29;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(36)))), ((int)(((byte)(57)))));
             this.ClientSize = new System.Drawing.Size(1229, 524);
+            this.Controls.Add(this.LoadColumnSettings);
+            this.Controls.Add(this.profileCatalog1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.LabelHeight);
             this.Controls.Add(this.HeightInput);
@@ -451,8 +477,8 @@ namespace PadFootingCreator
         private System.Windows.Forms.TextBox HeightInput;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button CreatePadFootingButton;
-
-
+        private Tekla.Structures.Dialog.UIControls.ProfileCatalog profileCatalog1;
+        private ComboBox LoadColumnSettings;
     }
 }
 

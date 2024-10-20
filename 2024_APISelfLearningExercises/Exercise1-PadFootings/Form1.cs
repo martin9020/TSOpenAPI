@@ -1,39 +1,87 @@
-using Render;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Tekla.Structures.Model;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
+using Tekla.Structures.Dialog;
+using Tekla.Structures.Geometry3d;
+using Tekla.Structures;
 
 
 namespace PadFootingCreator
 {
     public partial class Form1 : Form
     {
-        
+
         private readonly Dictionary<string, Action> optionActions;
+        private readonly Model MyModel;
+        
         public Form1()
         {
             InitializeComponent();
+            //base.InitializeForm();
             MyModel = new Model();
-            SpacingXInput.KeyPress += SpacingXInput_KeyPress;
-            SpacingYInput.KeyPress += SpacingYInput_KeyPress;
-            NumPadsXInput.KeyPress += NumPadsXInput_KeyPress;
-            NumPadsYInput.KeyPress += NumPadsYInput_KeyPress;
-            comboBox1.Items.Add("Option 1");
-            comboBox1.Items.Add("Option 2");
-            //default option selected 1 with index 0 
-            comboBox1.SelectedIndex = 0; 
-            // Initialize the dictionary
-            optionActions = new Dictionary<string, Action>
-        {
-            { "Option 1", ExecuteOption1 },
-            { "Option 2", ExecuteOption2 }
-        };
+            if (MyModel.GetConnectionStatus())
+            {
+
+                MessageBox.Show("Successfully connected to Tekla Structures model.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                
+            }
+            else
+            {
+                MessageBox.Show("Could not connect to Tekla Structures model.\nPlease Check Tekla is insstalled in the correct path: \nC>Program files>Tekla Structures>Version> \nAnd have access to >Bin> folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(0);
+            }
+
+                SpacingXInput.KeyPress += SpacingXInput_KeyPress;
+                SpacingYInput.KeyPress += SpacingYInput_KeyPress;
+                NumPadsXInput.KeyPress += NumPadsXInput_KeyPress;
+                NumPadsYInput.KeyPress += NumPadsYInput_KeyPress;
+                HeightInput.KeyPress += HeightInput_KeyPress;
+                comboBox1.Items.Add("Option 1");
+                comboBox1.Items.Add("Option 2");
+                //default option selected 1 with index 0 
+                comboBox1.SelectedIndex = 0;
+                // Initialize the dictionary
+                optionActions = new Dictionary<string, Action>
+                    {
+                        { "Option 1", ExecuteOption1 },
+                        { "Option 2", ExecuteOption2 }
+                    };
+
+
+            //string clmDirectory = @"C:\TeklaStructuresModels\New model 2\attributes";
+            string xsFirmPath = "";
+            TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref xsFirmPath);
+            //MessageBox.Show($"XS_FIRM Path: {xsFirmPath}");
+            string modelFolder = MyModel.GetInfo().ModelPath;
+            //MessageBox.Show($"XS_FIRM Path: {modelFolder}");
+            string clmDirectory = Path.Combine(modelFolder, "attributes");
+            MessageBox.Show($"CLM Directory: {clmDirectory}");
+            // Add .clm files to the ComboBox
+
+            string[] allFiles = Directory.GetFiles(clmDirectory);
+            //MessageBox.Show($"Number of files found: {allFiles.Length}");
+            foreach (string file in allFiles)
+            {
+                string fileName = Path.GetFileName(file);
+                //MessageBox.Show($"File  found: {fileName}");
+                if (file.EndsWith(".clm"))
+                {
+                  
+                    LoadColumnSettings.Items.Add(fileName);
+                }
+
+
+
+            }
+
+            // Set the background color of the form 
+
             this.BackColor = System.Drawing.Color.FromArgb(29, 36, 57);
+            
         }
 
-        private readonly Model MyModel;
 
         private void SpacingXInput_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -66,41 +114,16 @@ namespace PadFootingCreator
                 e.Handled = true;
             }
         }
+        private void HeightInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
 
-        //private bool ValidateInputs()
-        //{
-        //    if (string.IsNullOrWhiteSpace(SpacingXInput.Text))
-        //    {
-        //        MessageBox.Show("Please insert a value for Spacing X.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return false;
-        //    }
+       
 
-        //    if (string.IsNullOrWhiteSpace(SpacingYInput.Text))
-        //    {
-        //        MessageBox.Show("Please insert a value for Spacing Y.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return false;
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(NumPadsXInput.Text))
-        //    {
-        //        MessageBox.Show("Please insert a value for Number of Pads X.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return false;
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(NumPadsYInput.Text))
-        //    {
-        //        MessageBox.Show("Please insert a value for Number of Pads Y.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return false;
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(HeightInput.Text))
-        //    {
-        //        MessageBox.Show("Please insert a value for Height.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
 
         private bool ValidateInputs()
         {
@@ -239,7 +262,7 @@ namespace PadFootingCreator
 
         private static void CreatePadFooting(double PositionX, double PositionY)
         {
-
+            
             Beam PadFooting1 = new Beam
             {
                 Name = "PAD-FOOTING",
@@ -289,7 +312,7 @@ namespace PadFootingCreator
             if (MyModel.GetConnectionStatus())
             {
                 ProjectInfo myPI = MyModel.GetProjectInfo();
-               
+
                 myPI.ProjectNumber = JobNumberText.Text;
                 myPI.Name = JobNameText.Text;
                 myPI.Builder = JobBuilderText.Text;
@@ -306,5 +329,9 @@ namespace PadFootingCreator
         {
 
         }
+
+
+
+
     }
 }
