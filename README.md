@@ -1,4 +1,5 @@
 # TSOpenAPISelfLearningExercises
-Complete these exercises and learn how to start with Tekla Structures Open API
-![image](https://github.com/user-attachments/assets/4d8e5f76-3146-409d-8b10-2717d33999cf)
-![image](https://github.com/user-attachments/assets/3f2f293a-9fac-412b-8172-e72fcc17086a)
+v0.00.0.0.14
+![image](https://github.com/user-attachments/assets/a817e42b-8ecc-4b04-89be-86ed6e579942)
+![image](https://github.com/user-attachments/assets/514762a3-56ab-4212-94d9-9d5880bfd533)
+
