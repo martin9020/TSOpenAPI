@@ -1,10 +1,9 @@
 using System;
 using System.Globalization;
-
 using Tekla.Structures;
 using Tekla.Structures.Dialog;
-using Tekla.Structures.Model;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
 using TSD = Tekla.Structures.Datatype;
 
 

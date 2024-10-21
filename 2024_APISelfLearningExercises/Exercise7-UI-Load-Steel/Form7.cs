@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
-
 using Tekla.Structures;
 using Tekla.Structures.Catalogs;
 using Tekla.Structures.Dialog;
 using Tekla.Structures.Dialog.UIControls;
-using Tekla.Structures.Model;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
 using TSD = Tekla.Structures.Datatype;
 
 namespace Exercise
@@ -43,13 +42,13 @@ namespace Exercise
             if (MyModel.GetConnectionStatus())
             {
                 // Loop through X-axis  (these loops should be changed to match current grid)
-                 for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
+                for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
                 {
                     // In first and in last line
                     if (PositionX.Equals(0.0) || PositionX.Equals(12000.0))
                     {
                         // Loop through Y-axis to get pad footings on the longer sides of the grid
-                         for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
+                        for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
                         {
                             CreateFootingAndColumn(PositionX, PositionY);
                         }
@@ -85,9 +84,9 @@ namespace Exercise
                         ModelObjectEnumerator BeamChildren = MyBeam.GetChildren();
                         bool HasRebars = false;
 
-                        while(BeamChildren.MoveNext())
+                        while (BeamChildren.MoveNext())
                         {
-                            if(BeamChildren.Current is Reinforcement)
+                            if (BeamChildren.Current is Reinforcement)
                             {
                                 HasRebars = true;
                             }
@@ -149,10 +148,10 @@ namespace Exercise
             Rebar.Name = "FootingRebar";
             Rebar.Grade = GradeTextBox.Text;
             Rebar.Size = SizeTextBox.Text;
-            
-            char[] Separator = {' '};
+
+            char[] Separator = { ' ' };
             string[] Radiuses = BendingRadiusTextBox.Text.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            foreach(string Item in Radiuses)
+            foreach (string Item in Radiuses)
                 Rebar.RadiusValues.Add(Convert.ToDouble(Item));
 
             Rebar.SpacingType = BaseRebarGroup.RebarGroupSpacingTypeEnum.SPACING_TYPE_TARGET_SPACE;
@@ -215,7 +214,7 @@ namespace Exercise
         {
             ModelObject PadFooting = CreatePadFooting(PositionX, PositionY, double.Parse(FootingSize.Text));
             Beam Column = CreateColumn(PositionX, PositionY);
-            CreateBasePlate(Column);  
+            CreateBasePlate(Column);
         }
 
         /// <summary>
@@ -307,9 +306,9 @@ namespace Exercise
             }
         }
 
-/*-----------------------------------------*
- * Exercise 5-7 under this                 *
- * ----------------------------------------*/
+        /*-----------------------------------------*
+         * Exercise 5-7 under this                 *
+         * ----------------------------------------*/
         /// <summary>
         /// Callback function to show the profile selection dialog. The value set in 
         /// ColumnsProfileTextBox is set as SelectedProfile to be selected in the 
@@ -360,7 +359,7 @@ namespace Exercise
 
             SelectionForm.ShowDialog();
 
-            if(SelectionForm.DialogResult == DialogResult.OK)
+            if (SelectionForm.DialogResult == DialogResult.OK)
                 SetAttributeValue(ColumnsMaterialTextBox, SelectionForm.SelectedMaterial);
 
         }
@@ -380,11 +379,11 @@ namespace Exercise
 
             MaterialItemEnumerator Materials = CatalogHandler.GetMaterialItems();
 
-            while(Materials.MoveNext())
+            while (Materials.MoveNext())
             {
                 MaterialItem Item = Materials.Current;
 
-                if(Item.Type == MaterialItem.MaterialItemTypeEnum.MATERIAL_STEEL)
+                if (Item.Type == MaterialItem.MaterialItemTypeEnum.MATERIAL_STEEL)
                 {
                     SteelMaterials.Add(Item);
                 }

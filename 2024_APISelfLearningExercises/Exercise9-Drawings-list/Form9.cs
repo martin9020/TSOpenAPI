@@ -2,20 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
-
 using Tekla.Structures;
 using Tekla.Structures.Catalogs;
 using Tekla.Structures.Dialog;
 using Tekla.Structures.Dialog.UIControls;
 using Tekla.Structures.Drawing;
-using Tekla.Structures.Model;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
+using ModelObject = Tekla.Structures.Model.ModelObject;
+using Polygon = Tekla.Structures.Model.Polygon;
 using TSD = Tekla.Structures.Datatype;
-
-using Connection=Tekla.Structures.Model.Connection;
-using ModelObject=Tekla.Structures.Model.ModelObject;
-using Polygon=Tekla.Structures.Model.Polygon;
-using View=Tekla.Structures.Drawing.View;
+using View = Tekla.Structures.Drawing.View;
 
 namespace Exercise
 {
@@ -51,13 +48,13 @@ namespace Exercise
             if (MyModel.GetConnectionStatus())
             {
                 // Loop through X-axis  (these loops should be changed to match current grid)
-                 for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
+                for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
                 {
                     // In first and in last line
                     if (PositionX.Equals(0.0) || PositionX.Equals(12000.0))
                     {
                         // Loop through Y-axis to get pad footings on the longer sides of the grid
-                         for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
+                        for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
                         {
                             CreateFootingAndColumn(PositionX, PositionY);
                         }
@@ -93,13 +90,13 @@ namespace Exercise
                         ModelObjectEnumerator BeamChildren = MyBeam.GetChildren();
                         bool HasRebars = false;
 
-                        while(BeamChildren.MoveNext())
-                    {
-                            if(BeamChildren.Current is Reinforcement)
+                        while (BeamChildren.MoveNext())
+                        {
+                            if (BeamChildren.Current is Reinforcement)
                             {
                                 HasRebars = true;
-                    }
-                }
+                            }
+                        }
 
                         if (HasRebars)
                         {
@@ -157,10 +154,10 @@ namespace Exercise
             Rebar.Name = "FootingRebar";
             Rebar.Grade = GradeTextBox.Text;
             Rebar.Size = SizeTextBox.Text;
-            
-            char[] Separator = {' '};
+
+            char[] Separator = { ' ' };
             string[] Radiuses = BendingRadiusTextBox.Text.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-            foreach(string Item in Radiuses)
+            foreach (string Item in Radiuses)
                 Rebar.RadiusValues.Add(Convert.ToDouble(Item));
 
             Rebar.SpacingType = BaseRebarGroup.RebarGroupSpacingTypeEnum.SPACING_TYPE_TARGET_SPACE;
@@ -363,7 +360,7 @@ namespace Exercise
 
             SelectionForm.ShowDialog();
 
-            if(SelectionForm.DialogResult == DialogResult.OK)
+            if (SelectionForm.DialogResult == DialogResult.OK)
                 SetAttributeValue(ColumnsMaterialTextBox, SelectionForm.SelectedMaterial);
 
         }
@@ -383,19 +380,19 @@ namespace Exercise
 
             MaterialItemEnumerator Materials = CatalogHandler.GetMaterialItems();
 
-            while(Materials.MoveNext())
+            while (Materials.MoveNext())
             {
                 MaterialItem Item = Materials.Current;
 
-                if(Item.Type == MaterialItem.MaterialItemTypeEnum.MATERIAL_STEEL)
+                if (Item.Type == MaterialItem.MaterialItemTypeEnum.MATERIAL_STEEL)
                 {
                     SteelMaterials.Add(Item);
                 }
             }
         }
-/*-----------------------------------------*
- * Add template form                       *
- * ----------------------------------------*/
+        /*-----------------------------------------*
+         * Add template form                       *
+         * ----------------------------------------*/
 
         /// <summary>
         /// Shows the CreateDialog.
@@ -405,9 +402,9 @@ namespace Exercise
             CreateForm TeklaCreateDialog = new CreateForm();
             TeklaCreateDialog.Show();
         }
-/*-----------------------------------------*
- * Exercise 8 under this                   *
- * ----------------------------------------*/
+        /*-----------------------------------------*
+         * Exercise 8 under this                   *
+         * ----------------------------------------*/
 
         /// <summary>
         /// Callback for the "Edit drawing" button.
@@ -425,7 +422,7 @@ namespace Exercise
         /// </summary>
         private void EditOpenedDrawing()
         {
-            if(MyDrawingHandler.GetConnectionStatus())
+            if (MyDrawingHandler.GetConnectionStatus())
             {
                 Drawing MyDrawing = MyDrawingHandler.GetActiveDrawing();
 
@@ -433,7 +430,7 @@ namespace Exercise
                 DrawingObjectEnumerator MyViewEnumerator = Sheet.GetViews();
 
                 //Looping through views in the drawing
-                while(MyViewEnumerator.MoveNext())
+                while (MyViewEnumerator.MoveNext())
                 {
                     View CurrentView = MyViewEnumerator.Current as View; //If ViewBase used instead of View, then multidrawing's container views would work here also
 
@@ -442,7 +439,7 @@ namespace Exercise
                         //Getting bounding box for the view frame and calculating then the CenterPoint under it
                         RectangleBoundingBox ViewAABB = CurrentView.GetAxisAlignedBoundingBox();
                         Point CenterPoint = new Point();
-                        CenterPoint.X = ViewAABB.LowerLeft.X + (ViewAABB.LowerRight.X - ViewAABB.LowerLeft.X)/2.0;
+                        CenterPoint.X = ViewAABB.LowerLeft.X + (ViewAABB.LowerRight.X - ViewAABB.LowerLeft.X) / 2.0;
                         CenterPoint.Y = ViewAABB.LowerLeft.Y - 5.0;  //5.0 mm below the view's bounding box
 
                         Text MyViewTitle = new Text(Sheet, CenterPoint, ViewTitle.Text, new Text.TextAttributes());
@@ -462,9 +459,9 @@ namespace Exercise
                 MyDrawing.CommitChanges();
             }
         }
-/*-----------------------------------------*
- * Exercise 9 under this                  *
- * ----------------------------------------*/
+        /*-----------------------------------------*
+         * Exercise 9 under this                  *
+         * ----------------------------------------*/
 
         /// <summary>
         /// Opens selected drawing in Tekla Structures, ie. sets it as active drawing.
@@ -476,7 +473,7 @@ namespace Exercise
         {
             if (MyDrawingHandler.GetConnectionStatus())
             {
-                if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0 && 
+                if (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0 &&
                     listView1.SelectedItems[0] != null && listView1.SelectedItems[0].Tag is Drawing)
                 {
                     if (!MyDrawingHandler.SetActiveDrawing(listView1.SelectedItems[0].Tag as Drawing))

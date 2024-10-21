@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Tekla.Structures.Model;
@@ -7,7 +7,6 @@ using Tekla.Structures.Dialog;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures;
 using System.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 
@@ -57,7 +56,7 @@ namespace PadFootingCreator
             //string clmDirectory = @"C:\TeklaStructuresModels\New model 2\attributes";
             string xsFirmPath = "";
             TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref xsFirmPath);
-            
+
             string clmDirectory;
             if (string.IsNullOrWhiteSpace(xsFirmPath))
             {
@@ -424,12 +423,6 @@ namespace PadFootingCreator
                     return;
                 }
 
-
-
-
-
-
-
                 double spacingX = double.Parse(SpacingXInput.Text);
                 double spacingY = double.Parse(SpacingYInput.Text);
                 int numPadsX = int.Parse(NumPadsXInput.Text);
@@ -459,50 +452,11 @@ namespace PadFootingCreator
                 };
 
                 // Commit the grid object to the model
-                //delete existing grid
-
-
-
-
-
-
-                //Get all grid IDs
-                ModelObjectEnumerator modelObjects = MyModel.GetModelObjectSelector().GetAllObjects();
-
-                while (modelObjects.MoveNext())
-                {
-                    var modelObject = modelObjects.Current;
-                    if (modelObject is Grid gridObject)
-                    {
-                        MessageBox.Show($"Grid ID: {gridObject.Identifier.ID}");
-                        //delete all grids with the gridObject.Identifier.ID
-                        gridObject.Delete();
-
-
-                    }
-                }
-
-
-                //ModelObjectEnumerator modelObjects2 = MyModel.GetModelObjectSelector().GetAllObjects();
-                //while (modelObjects.MoveNext())
-                //{
-                //    var modelObject2 = modelObjects2.Current;
-                //    if (modelObject2 is Beam beamObject)
-                //    {
-                //        MessageBox.Show($"Beam ID: {beamObject.Identifier.ID}");
-                //        // delete all beams with the beamObject.Identifier.ID
-                //        beamObject.Delete();
-                //    }
-                //}
-
-                //// After all deletions, commit changes to the model
-                //MyModel.CommitChanges();
-                //MessageBox.Show("All beams deleted and changes committed.");
+                var existingGrids = MyModel.GetModelObjectSelector().GetAllObjectsWithType(ModelObject.ModelObjectEnum.GRIDDIVISION).ToArray();
 
 
                 bool result = objGrid.Insert();
                 MyModel.CommitChanges();
-
 
 
             }

@@ -1,9 +1,8 @@
 using System;
-
 using Tekla.Structures;
 using Tekla.Structures.Dialog;
-using Tekla.Structures.Model;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
 
 namespace Exercise
 {

@@ -1,9 +1,8 @@
 using System;
 using System.Windows.Forms;
-
 using Tekla.Structures;
-using Tekla.Structures.Model;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
 
 namespace Exercise
 {
@@ -28,13 +27,13 @@ namespace Exercise
             if (MyModel.GetConnectionStatus())
             {
                 // Loop through X-axis  (these loops should be changed to match current grid)
-                 for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
+                for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
                 {
                     // In first and in last line
                     if (PositionX.Equals(0.0) || PositionX.Equals(12000.0))
                     {
                         // Loop through Y-axis to get pad footings on the longer sides of the grid
-                         for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
+                        for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
                         {
                             CreateFootingAndColumn(PositionX, PositionY);
                         }
@@ -70,9 +69,9 @@ namespace Exercise
                         ModelObjectEnumerator BeamChildren = MyBeam.GetChildren();
                         bool HasRebars = false;
 
-                        while(BeamChildren.MoveNext())
+                        while (BeamChildren.MoveNext())
                         {
-                            if(BeamChildren.Current is Reinforcement)
+                            if (BeamChildren.Current is Reinforcement)
                             {
                                 HasRebars = true;
                             }
@@ -115,7 +114,7 @@ namespace Exercise
             RebarPolygon1.Points.Add(new Point(PositionX - MyFootingSize / 2.0, PositionY + MyFootingSize / 2.0, 0));
             RebarPolygon1.Points.Add(new Point(PositionX - MyFootingSize / 2.0, PositionY - MyFootingSize / 2.0, 0));
             Rebar.Polygons.Add(RebarPolygon1);
-            
+
             //or calculate by rebar's solid's Axis Aligned Bounding Box
             //Rebar.Polygons.Add(GetPolygonBySolidsAABB(PadFooting as Beam));
 
@@ -195,7 +194,7 @@ namespace Exercise
         {
             Beam PadFooting = CreatePadFooting(PositionX, PositionY, double.Parse(FootingSize.Text));
             Beam Column = CreateColumn(PositionX, PositionY);
-            CreateBasePlate(Column);  
+            CreateBasePlate(Column);
         }
 
         /// <summary>

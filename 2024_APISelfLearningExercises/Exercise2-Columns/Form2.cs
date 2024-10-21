@@ -1,8 +1,6 @@
 using System;
 using System.Windows.Forms;
-using Tekla.Structures;
 using Tekla.Structures.Model;
-using Tekla.Structures.Geometry3d;
 
 namespace Exercise
 {
@@ -26,13 +24,13 @@ namespace Exercise
             if (MyModel.GetConnectionStatus())
             {
                 // Loop through X-axis  (these loops should be changed to match current grid)
-                 for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
+                for (double PositionX = 0.0; PositionX <= 12000.0; PositionX += 3000.0)
                 {
                     // In first and in last line
                     if (PositionX.Equals(0.0) || PositionX.Equals(12000.0))
                     {
                         // Loop through Y-axis to get pad footings on the longer sides of the grid
-                         for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
+                        for (double PositionY = 0.0; PositionY <= 30000.0; PositionY += 6000.0)
                         {
                             CreateFootingAndColumn(PositionX, PositionY);
                         }
@@ -126,6 +124,6 @@ namespace Exercise
             return Column;
         }
 
-      
+
     }
 }
