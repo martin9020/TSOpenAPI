@@ -10,6 +10,7 @@ using System.Linq;
 using System.Drawing;
 using RenderData;
 using System.Threading.Tasks;
+using System.Reflection.Emit;
 
 
 
@@ -57,7 +58,7 @@ namespace PadFootingCreator
         private Rectangle recComboBox1;
         private Rectangle recLabelOption;
         private Rectangle recInsertJobDescriptionButton;
-        private Rectangle recbutton1;
+        private Rectangle recGridInsertButton;
 
 
 #endregion Private functions
@@ -108,12 +109,14 @@ namespace PadFootingCreator
             recComboBox1 = new Rectangle(comboBox1.Location, comboBox1.Size);
             recLabelOption = new Rectangle(LabelOption.Location, LabelOption.Size);
             recInsertJobDescriptionButton = new Rectangle(InsertJobDescriptionButton.Location, InsertJobDescriptionButton.Size);
-            recbutton1 = new Rectangle(button1.Location, button1.Size);
+            recGridInsertButton = new Rectangle(GridInsertButton.Location, GridInsertButton.Size);
             #endregion some other rectangular declarations for resizing
 
 
             //base.InitializeForm();
+            #region new Model connection
             MyModel = new Model();
+
             if (MyModel.GetConnectionStatus())
             {
 
@@ -125,12 +128,18 @@ namespace PadFootingCreator
                 MessageBox.Show("Could not connect to Tekla Structures model.\nPlease Check Tekla is insstalled in the correct path: \nC>Program files>Tekla Structures>Version> \nAnd have access to >Bin> folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             }
+            #endregion
 
+            #region Validation () - only numbers in numbered fields 
             SpacingXInput.KeyPress += SpacingXInput_KeyPress;
             SpacingYInput.KeyPress += SpacingYInput_KeyPress;
             NumPadsXInput.KeyPress += NumPadsXInput_KeyPress;
             NumPadsYInput.KeyPress += NumPadsYInput_KeyPress;
             HeightInput.KeyPress += HeightInput_KeyPress;
+            #endregion KeyPress=only numbers validation
+
+            #region Here are the options of the canopies
+
             comboBox1.Items.Add("Option 1");
             comboBox1.Items.Add("Option 2");
             //default option selected 1 with index 0 
@@ -141,10 +150,17 @@ namespace PadFootingCreator
                         { "Option 1", ExecuteOption1 },
                         { "Option 2", ExecuteOption2 }
                     };
+            #endregion
+
+
+            #region Declare xsFirmPath or modelFolder
+
             // Add .clm files to the ComboBox
             //MessageBox.Show($"XS_FIRM Path: {xsFirmPath}");
             //MessageBox.Show($"XS_FIRM Path: {modelFolder}");
             //string clmDirectory = @"C:\TeklaStructuresModels\New model 2\attributes";
+
+
             string xsFirmPath = "";
             TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref xsFirmPath);
             
@@ -200,13 +216,27 @@ namespace PadFootingCreator
                 MessageBox.Show($"Directory not found: {clmDirectory}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             }
-
-
-
+            #endregion
 
             // Set the background color of the form 
 
             this.BackColor = System.Drawing.Color.FromArgb(29, 36, 57);
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // message all loaded 
+            MessageBox.Show("All loaded");
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoadColumnSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
 
@@ -246,7 +276,7 @@ namespace PadFootingCreator
             resize_Control(comboBox1, recComboBox1);
             resize_Control(LabelOption, recLabelOption);
             resize_Control(InsertJobDescriptionButton, recInsertJobDescriptionButton);
-            resize_Control(button1, recbutton1);
+            resize_Control(GridInsertButton, recGridInsertButton);
 
 
 
@@ -268,8 +298,6 @@ namespace PadFootingCreator
         }
 
         #endregion Form1_Resize
-
-
 
         #region Validations for the inputs in the form for numbers only
 
@@ -356,6 +384,7 @@ namespace PadFootingCreator
         }
 
         #region ExecuteOption1&2
+        #region Execute Option 1
 
         private void ExecuteOption1()
         {
@@ -444,6 +473,7 @@ namespace PadFootingCreator
             }
         }
 
+        #endregion
         // Function to extend an existing beam
         private void ExtendBeamEnd(double startX, double startY, double endX, double endY, double height)
         {
@@ -542,6 +572,7 @@ namespace PadFootingCreator
 
         #endregion  CreatePadFooting, CreateColumn, CreateBeam
 
+  
 
         private void InsertJobDescription(object sender, EventArgs e)
         {
@@ -561,17 +592,48 @@ namespace PadFootingCreator
             }
         }
 
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+
+        #region Find Grid ID, Delete Grid by ID
+        private int FindGridID()
         {
+            ModelObjectEnumerator modelObjects = MyModel.GetModelObjectSelector().GetAllObjects();
+
+            while (modelObjects.MoveNext())
+            {
+                var modelObject = modelObjects.Current;
+                if (modelObject is Grid gridObject)
+                {
+                    int gridId = gridObject.Identifier.ID;
+                    MessageBox.Show($"Grid ID: {gridId}");
+                    return gridId; // Return the first found grid ID
+                }
+            }
+
+            MessageBox.Show("No grid found.");
+            return 0; // Return -1 if no grid is found
+        }
+
+        private void DeleteGridByID(int gridID)
+        {
+            ModelObjectEnumerator modelObjects = MyModel.GetModelObjectSelector().GetAllObjects();
+
+            while (modelObjects.MoveNext())
+            {
+                var modelObject = modelObjects.Current;
+                if (modelObject is Grid gridObject && gridObject.Identifier.ID == gridID)
+                {
+                    gridObject.Delete();
+                    MyModel.CommitChanges();
+                    return;
+                }
+            }
+
 
         }
 
-        private void LoadColumnSettings_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        #endregion
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void GridInsertButton_Click(object sender, EventArgs e)
         {
 
 
@@ -583,10 +645,11 @@ namespace PadFootingCreator
                     return;
                 }
 
-
-
-
-
+                int gridID = FindGridID();
+                if (gridID != 0)
+                {
+                    DeleteGridByID(gridID);
+                }
 
 
                 double spacingX = double.Parse(SpacingXInput.Text);
@@ -596,18 +659,21 @@ namespace PadFootingCreator
                 double height = 0; // Height is set to 0
 
                 // Create the CoordinateX and CoordinateY strings using the variables
-                string coordinateX = string.Join(" ", Enumerable.Range(0, numPadsX).Select(i => (i * spacingX).ToString("0.00")));
-                string coordinateY = string.Join(" ", Enumerable.Range(0, numPadsY).Select(i => (i * spacingY).ToString("0.00")));
+                string coordinateX = $"0.00 {numPadsX-1}*{spacingX:0.00}";
+                string coordinateY = $"0.00 {numPadsY-1}*{spacingY:0.00}";
+                string coordinateZ = $"-200 0 {height}"; // Adjusted CoordinateZ
+                string labelX = string.Join(" ", Enumerable.Range(0, numPadsX).Select(i => ((char)('A' + i)).ToString()));
+                string labelY = string.Join(" ", Enumerable.Range(1, numPadsY).Select(i => i.ToString()));
 
                 Grid objGrid = new Grid
                 {
                     Name = "Grid",
                     CoordinateX = coordinateX,
                     CoordinateY = coordinateY,
-                    CoordinateZ = "0.00 6000.00 8000.00 9000.00", // Keeping CoordinateZ unchanged
-                    LabelX = "A B C D E",
-                    LabelY = "1 2 3 4 5 6",
-                    LabelZ = "+0 +6000 +8000 +9000",
+                    CoordinateZ = coordinateZ,
+                    LabelX = labelX,
+                    LabelY = labelY,
+                    LabelZ = "+0 +6000 +8000 +9000", // Keeping LabelZ unchanged
                     ExtensionLeftX = 1000.0,
                     ExtensionLeftY = 1000.0,
                     ExtensionLeftZ = 1000.0,
@@ -617,56 +683,13 @@ namespace PadFootingCreator
                     IsMagnetic = false
                 };
 
-                // Commit the grid object to the model
-                //delete existing grid
-
-
-
-
-
-
-                //Get all grid IDs
-                ModelObjectEnumerator modelObjects = MyModel.GetModelObjectSelector().GetAllObjects();
-
-                while (modelObjects.MoveNext())
-                {
-                    var modelObject = modelObjects.Current;
-                    if (modelObject is Grid gridObject)
-                    {
-                        MessageBox.Show($"Grid ID: {gridObject.Identifier.ID}");
-                        //delete all grids with the gridObject.Identifier.ID
-                        gridObject.Delete();
-
-
-                    }
-                }
-
-
-                //ModelObjectEnumerator modelObjects2 = MyModel.GetModelObjectSelector().GetAllObjects();
-                //while (modelObjects.MoveNext())
-                //{
-                //    var modelObject2 = modelObjects2.Current;
-                //    if (modelObject2 is Beam beamObject)
-                //    {
-                //        MessageBox.Show($"Beam ID: {beamObject.Identifier.ID}");
-                //        // delete all beams with the beamObject.Identifier.ID
-                //        beamObject.Delete();
-                //    }
-                //}
-
-                //// After all deletions, commit changes to the model
-                //MyModel.CommitChanges();
-                //MessageBox.Show("All beams deleted and changes committed.");
-
 
                 bool result = objGrid.Insert();
                 MyModel.CommitChanges();
-
-
-
+                MessageBox.Show($"Grid insert result: {result}");
             }
 
-
         }
+
     }
 }
