@@ -40,7 +40,7 @@ namespace PadFootingCreator
             this.InsertJobDescriptionButton = new System.Windows.Forms.Button();
             this.LabelNumberPadsX = new System.Windows.Forms.Label();
             this.LabelNumberPadsY = new System.Windows.Forms.Label();
-            this.PostcodeText = new System.Windows.Forms.Label();
+            this.PostcodeLabel = new System.Windows.Forms.Label();
             this.LabelJobBuilder = new System.Windows.Forms.Label();
             this.JobPostCodeText = new System.Windows.Forms.TextBox();
             this.JobBuilderText = new System.Windows.Forms.TextBox();
@@ -62,7 +62,7 @@ namespace PadFootingCreator
             this.LoadBeamSettings = new System.Windows.Forms.ComboBox();
             this.ColumnSettingsLabel = new System.Windows.Forms.Label();
             this.BeamSettingsLabel = new System.Windows.Forms.Label();
-            this.LabelOptions = new System.Windows.Forms.Label();
+            this.LabelOption = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -177,18 +177,18 @@ namespace PadFootingCreator
             this.LabelNumberPadsY.TabIndex = 9;
             this.LabelNumberPadsY.Text = "Number Pads Y";
             // 
-            // PostcodeText
+            // PostcodeLabel
             // 
-            this.PostcodeText.AutoSize = true;
-            this.PostcodeText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(21)))), ((int)(((byte)(36)))));
-            this.PostcodeText.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.PostcodeText.ForeColor = System.Drawing.Color.White;
-            this.PostcodeText.Location = new System.Drawing.Point(741, 225);
-            this.PostcodeText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.PostcodeText.Name = "PostcodeText";
-            this.PostcodeText.Size = new System.Drawing.Size(108, 30);
-            this.PostcodeText.TabIndex = 17;
-            this.PostcodeText.Text = "Postcode";
+            this.PostcodeLabel.AutoSize = true;
+            this.PostcodeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(21)))), ((int)(((byte)(36)))));
+            this.PostcodeLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.PostcodeLabel.ForeColor = System.Drawing.Color.White;
+            this.PostcodeLabel.Location = new System.Drawing.Point(741, 225);
+            this.PostcodeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.PostcodeLabel.Name = "PostcodeLabel";
+            this.PostcodeLabel.Size = new System.Drawing.Size(108, 30);
+            this.PostcodeLabel.TabIndex = 17;
+            this.PostcodeLabel.Text = "Postcode";
             // 
             // LabelJobBuilder
             // 
@@ -431,22 +431,22 @@ namespace PadFootingCreator
             this.BeamSettingsLabel.TabIndex = 32;
             this.BeamSettingsLabel.Text = "BeamSettings";
             // 
-            // LabelOptions
+            // LabelOption
             // 
-            this.LabelOptions.AutoSize = true;
-            this.LabelOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(21)))), ((int)(((byte)(36)))));
-            this.LabelOptions.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.LabelOptions.ForeColor = System.Drawing.Color.White;
-            this.LabelOptions.Location = new System.Drawing.Point(281, 351);
-            this.LabelOptions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.LabelOptions.Name = "LabelOptions";
-            this.LabelOptions.Size = new System.Drawing.Size(266, 23);
-            this.LabelOptions.TabIndex = 33;
-            this.LabelOptions.Text = "Some Settings and options here";
+            this.LabelOption.AutoSize = true;
+            this.LabelOption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(21)))), ((int)(((byte)(36)))));
+            this.LabelOption.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.LabelOption.ForeColor = System.Drawing.Color.White;
+            this.LabelOption.Location = new System.Drawing.Point(281, 351);
+            this.LabelOption.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LabelOption.Name = "LabelOption";
+            this.LabelOption.Size = new System.Drawing.Size(266, 23);
+            this.LabelOption.TabIndex = 33;
+            this.LabelOption.Text = "Some Settings and options here";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(387, 282);
+            this.button1.Location = new System.Drawing.Point(547, 388);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 46);
             this.button1.TabIndex = 34;
@@ -459,9 +459,9 @@ namespace PadFootingCreator
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(36)))), ((int)(((byte)(57)))));
-            this.ClientSize = new System.Drawing.Size(1135, 445);
+            this.ClientSize = new System.Drawing.Size(1134, 459);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.LabelOptions);
+            this.Controls.Add(this.LabelOption);
             this.Controls.Add(this.BeamSettingsLabel);
             this.Controls.Add(this.ColumnSettingsLabel);
             this.Controls.Add(this.LoadBeamSettings);
@@ -475,7 +475,7 @@ namespace PadFootingCreator
             this.Controls.Add(this.JobInfo1);
             this.Controls.Add(this.LabelJobDesigner);
             this.Controls.Add(this.JobDesignerText);
-            this.Controls.Add(this.PostcodeText);
+            this.Controls.Add(this.PostcodeLabel);
             this.Controls.Add(this.LabelJobBuilder);
             this.Controls.Add(this.JobPostCodeText);
             this.Controls.Add(this.JobBuilderText);
@@ -514,7 +514,7 @@ namespace PadFootingCreator
         private System.Windows.Forms.Button InsertJobDescriptionButton;
         private System.Windows.Forms.Label LabelNumberPadsX;
         private System.Windows.Forms.Label LabelNumberPadsY;
-        private System.Windows.Forms.Label PostcodeText;
+        private System.Windows.Forms.Label PostcodeLabel;
         private System.Windows.Forms.Label LabelJobBuilder;
         private System.Windows.Forms.TextBox JobPostCodeText;
         private System.Windows.Forms.TextBox JobBuilderText;
@@ -536,7 +536,7 @@ namespace PadFootingCreator
         private ComboBox LoadBeamSettings;
         private Label ColumnSettingsLabel;
         private Label BeamSettingsLabel;
-        private Label LabelOptions;
+        private Label LabelOption;
         private Button button1;
     }
 }

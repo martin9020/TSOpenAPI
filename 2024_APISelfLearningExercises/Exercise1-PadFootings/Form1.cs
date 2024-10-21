@@ -7,7 +7,9 @@ using Tekla.Structures.Dialog;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures;
 using System.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing;
+using RenderData;
+using System.Threading.Tasks;
 
 
 
@@ -19,9 +21,97 @@ namespace PadFootingCreator
         private readonly Dictionary<string, Action> optionActions;
         private readonly Model MyModel;
 
+        #region Private functions for resizing the form controls
+
+        private Size formOriginalSize;
+
+        private Rectangle recLabelSpacingX;
+        private Rectangle recLabelSpacingY;
+        private Rectangle recLabelNumPadsX;
+        private Rectangle recLabelNumPadsY;
+        private Rectangle recLabelHeight;
+        private Rectangle recNumPadsXInput;
+        private Rectangle recNumPadsYInput;
+        private Rectangle recSpacingXInput;
+        private Rectangle recSpacingYInput;
+        private Rectangle recHeightInput;
+        private Rectangle recColumnSettingsLabel;
+        private Rectangle recBeamSettingsLabel;
+        private Rectangle recLoadColumnSettings;
+        private Rectangle recLoadBeamSettings;
+        private Rectangle recLabelJobNumber;
+        private Rectangle recLabelJobName;
+        private Rectangle recLabelJobBuilder;
+        private Rectangle recLabelJobDescription;
+        private Rectangle recLabelJobDesigner;
+        private Rectangle recPostcodeLabel;
+        private Rectangle recLabelInfo1;
+        private Rectangle recJobNumberText;
+        private Rectangle recJobNameText;
+        private Rectangle recJobBuilderText;
+        private Rectangle recJobDescription;
+        private Rectangle recJobDesignerText;
+        private Rectangle recJobPostCodeText;
+        private Rectangle recJobInfo1;
+        private Rectangle recCreatePadFootingButton;
+        private Rectangle recComboBox1;
+        private Rectangle recLabelOption;
+        private Rectangle recInsertJobDescriptionButton;
+        private Rectangle recbutton1;
+
+
+#endregion Private functions
+
+
+
+
         public Form1()
         {
             InitializeComponent();
+            this.Resize += this.Form1_Resize;
+            //this.Resize += this.Form1_Resize;
+            //this.Resize += new System.EventHandler(this.Form1_Resize);
+
+
+            formOriginalSize = this.Size;
+            #region some other rectangular declarations for resizing
+
+            recLabelSpacingX = new Rectangle(LabelSpacingX.Location, LabelSpacingX.Size);
+            recLabelSpacingY = new Rectangle(LabelSpacingY.Location, LabelSpacingY.Size);
+            recLabelNumPadsX = new Rectangle(LabelNumberPadsX.Location, LabelNumberPadsX.Size);
+            recLabelNumPadsY = new Rectangle(LabelNumberPadsY.Location, LabelNumberPadsY.Size);
+            recLabelHeight = new Rectangle(LabelHeight.Location, LabelHeight.Size);
+            recSpacingXInput = new Rectangle(SpacingXInput.Location, SpacingXInput.Size);
+            recSpacingYInput = new Rectangle(SpacingYInput.Location, SpacingYInput.Size);
+            recNumPadsXInput = new Rectangle(NumPadsXInput.Location, NumPadsXInput.Size);
+            recNumPadsYInput = new Rectangle(NumPadsYInput.Location, NumPadsYInput.Size);
+            recHeightInput = new Rectangle(HeightInput.Location, HeightInput.Size);
+            recColumnSettingsLabel = new Rectangle(ColumnSettingsLabel.Location, ColumnSettingsLabel.Size);
+            recBeamSettingsLabel = new Rectangle(BeamSettingsLabel.Location, BeamSettingsLabel.Size);
+            recLoadColumnSettings = new Rectangle(LoadColumnSettings.Location, LoadColumnSettings.Size);
+            recLoadBeamSettings = new Rectangle(LoadBeamSettings.Location, LoadBeamSettings.Size);
+            recLabelJobNumber = new Rectangle(LabelJobNumber.Location, LabelJobNumber.Size);
+            recLabelJobName = new Rectangle(LabelJobName.Location, LabelJobName.Size);
+            recLabelJobBuilder = new Rectangle(LabelJobBuilder.Location, LabelJobBuilder.Size);
+            recLabelJobDescription = new Rectangle(LabelJobDescription.Location, LabelJobDescription.Size);
+            recLabelJobDesigner = new Rectangle(LabelJobDesigner.Location, LabelJobDesigner.Size);
+            recPostcodeLabel = new Rectangle(PostcodeLabel.Location, PostcodeLabel.Size);
+            recLabelInfo1 = new Rectangle(LabelInfo1.Location, LabelInfo1.Size);
+            recJobNumberText = new Rectangle(JobNumberText.Location, JobNumberText.Size);
+            recJobNameText = new Rectangle(JobNameText.Location, JobNameText.Size);
+            recJobBuilderText = new Rectangle(JobBuilderText.Location, JobBuilderText.Size);
+            recJobDescription = new Rectangle(JobDescription.Location, JobDescription.Size);
+            recJobDesignerText = new Rectangle(JobDesignerText.Location, JobDesignerText.Size);
+            recJobPostCodeText = new Rectangle(JobPostCodeText.Location, JobPostCodeText.Size);
+            recJobInfo1 = new Rectangle(JobInfo1.Location, JobInfo1.Size);
+            recCreatePadFootingButton = new Rectangle(CreatePadFootingButton.Location, CreatePadFootingButton.Size);
+            recComboBox1 = new Rectangle(comboBox1.Location, comboBox1.Size);
+            recLabelOption = new Rectangle(LabelOption.Location, LabelOption.Size);
+            recInsertJobDescriptionButton = new Rectangle(InsertJobDescriptionButton.Location, InsertJobDescriptionButton.Size);
+            recbutton1 = new Rectangle(button1.Location, button1.Size);
+            #endregion some other rectangular declarations for resizing
+
+
             //base.InitializeForm();
             MyModel = new Model();
             if (MyModel.GetConnectionStatus())
@@ -120,6 +210,68 @@ namespace PadFootingCreator
 
         }
 
+        #region Form1_Resize
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            resize_Control(LabelSpacingX, recLabelSpacingX);
+            resize_Control(LabelSpacingY, recLabelSpacingY);
+            resize_Control(LabelNumberPadsX, recLabelNumPadsX);
+            resize_Control(LabelNumberPadsY, recLabelNumPadsY);
+            resize_Control(LabelHeight, recLabelHeight);
+            resize_Control(SpacingXInput, recSpacingXInput);
+            resize_Control(SpacingYInput, recSpacingYInput);
+            resize_Control(NumPadsXInput, recNumPadsXInput);
+            resize_Control(NumPadsYInput, recNumPadsYInput);
+            resize_Control(HeightInput, recHeightInput);
+            resize_Control(ColumnSettingsLabel, recColumnSettingsLabel);
+            resize_Control(BeamSettingsLabel, recBeamSettingsLabel);
+            resize_Control(LoadColumnSettings, recLoadColumnSettings);
+            resize_Control(LoadBeamSettings, recLoadBeamSettings);
+            resize_Control(LabelJobNumber, recLabelJobNumber);
+            resize_Control(LabelJobName, recLabelJobName);
+            resize_Control(LabelJobBuilder, recLabelJobBuilder);
+            resize_Control(LabelJobDescription, recLabelJobDescription);
+            resize_Control(LabelJobDesigner, recLabelJobDesigner);
+            resize_Control(PostcodeLabel, recPostcodeLabel);
+            resize_Control(LabelInfo1, recLabelInfo1);
+            resize_Control(JobNumberText, recJobNumberText);
+            resize_Control(JobNameText, recJobNameText);
+            resize_Control(JobBuilderText, recJobBuilderText);
+            resize_Control(JobDescription, recJobDescription);
+            resize_Control(JobDesignerText, recJobDesignerText);
+            resize_Control(JobPostCodeText, recJobPostCodeText);
+            resize_Control(JobInfo1, recJobInfo1);
+            resize_Control(CreatePadFootingButton, recCreatePadFootingButton);
+            resize_Control(comboBox1, recComboBox1);
+            resize_Control(LabelOption, recLabelOption);
+            resize_Control(InsertJobDescriptionButton, recInsertJobDescriptionButton);
+            resize_Control(button1, recbutton1);
+
+
+
+
+        }
+
+        private void resize_Control(Control control, Rectangle rec)
+        {
+            float xRatio = (float)(this.Width) / (float)(formOriginalSize.Width);
+            float yRatio = (float)(this.Height) / (float)(formOriginalSize.Height);
+            control.Left = (int)(rec.Left * xRatio);
+            control.Top = (int)(rec.Top * yRatio);
+            control.Width = (int)(rec.Width * xRatio);
+            control.Height = (int)(rec.Height * yRatio);
+            control.Location = new System.Drawing.Point(control.Left, control.Top);
+            int newWidth = (int)(rec.Width * xRatio);
+            int newHeight = (int)(rec.Height * yRatio);
+            control.Size = new Size(newWidth, newHeight);
+        }
+
+        #endregion Form1_Resize
+
+
+
+        #region Validations for the inputs in the form for numbers only
 
         private void SpacingXInput_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -185,7 +337,7 @@ namespace PadFootingCreator
             return true;
         }
 
-
+        #endregion Validations for the inputs in the form for numbers only
 
         //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         //{
@@ -202,6 +354,8 @@ namespace PadFootingCreator
                 optionActions[selectedOption].Invoke();
             }
         }
+
+        #region ExecuteOption1&2
 
         private void ExecuteOption1()
         {
@@ -337,6 +491,9 @@ namespace PadFootingCreator
             }
         }
 
+        #endregion ExecuteOption1&2 
+
+        #region CreatePadFooting, CreateColumn, CreateBeam
         private static void CreatePadFooting(double PositionX, double PositionY)
         {
 
@@ -382,6 +539,8 @@ namespace PadFootingCreator
             };
             Beam.Insert();
         }
+
+        #endregion  CreatePadFooting, CreateColumn, CreateBeam
 
 
         private void InsertJobDescription(object sender, EventArgs e)
