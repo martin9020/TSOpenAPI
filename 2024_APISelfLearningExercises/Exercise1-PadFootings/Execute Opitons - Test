@@ -1,0 +1,40 @@
+private void ExecuteOption1()
+{
+    if (MyModel.GetConnectionStatus())
+    {
+        if (!ValidateInputs())
+        {
+            return;
+        }
+
+        double spacingX = double.Parse(SpacingXInput.Text);
+        double spacingY = double.Parse(SpacingYInput.Text);
+        int numPadsX = int.Parse(NumPadsXInput.Text);
+        int numPadsY = int.Parse(NumPadsYInput.Text);
+        double height = double.Parse(HeightInput.Text);
+
+        // Create a grid of pad footing and column positions
+        var padFootingPositions = Enumerable.Range(0, numPadsX)
+            .SelectMany(x => Enumerable.Range(0, numPadsY).Select(y => (x, y)))
+            .Select(p => (PositionX: p.x * spacingX, PositionY: p.y * spacingY));
+
+        // Create pad footings and columns
+        padFootingPositions.ToList().ForEach(p =>
+        {
+            CreatePadFooting(p.PositionX, p.PositionY);
+            CreateColumn(p.PositionX, p.PositionY, height);
+        });
+
+        // Create beams (adjust logic based on your specific requirements)
+        var beamPositions = padFootingPositions
+            .Where(p => p.x > 0 || p.y > 0) // Exclude the top-left corner
+            .Select(p => (p.PositionX, p.PositionY, p.PositionX + spacingX, p.PositionY + spacingY));
+
+        beamPositions.ToList().ForEach(b =>
+        {
+            CreateBeam(b.Item1, b.Item2, b.Item3, b.Item4, height);
+        });
+
+        // ... (rest of your code)
+    }
+}
