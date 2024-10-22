@@ -6,5 +6,7 @@ v0.00.0.0.14
 Links 
 
 https://developer.tekla.com/doc/tekla-structures/2024/tekla-structures-20398
+
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPISelfLearningExercises/tree/master/2024_APISelfLearningExercises
+
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPIExamples/tree/2024
