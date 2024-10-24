@@ -10,7 +10,9 @@ https://developer.tekla.com/doc/tekla-structures/2024/tekla-structures-20398
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPISelfLearningExercises/tree/master/2024_APISelfLearningExercises
 
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPIExamples/tree/2024
+
 Everything is saved in Excercise1-padfootings / .cs
+
 I have found a way for better manipulating the grid with Chat GPT here:
 https://chatgpt.com/share/671a919d-8bac-8004-a90c-2e822e3c4793
 Need to update code and make it to work.
