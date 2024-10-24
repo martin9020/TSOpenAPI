@@ -20,6 +20,6 @@ Need to update code and make it to work.
 1. Whats need doing:
 Get and process the .clm and other attribute files for pre-saved settings
 2. Adding the option to choose a profile for columss, beams overrite the settings if chosen this option.
-3. Manipulate the grid option. -removes for() cycles and adds dictionary - saves all elements, points, and their location for future use.
+3. Manipulate the grid option. -removes for() cycles and adds dictionary (**Class-based Approach with OOP principles (More flexible and extendable)**) - saves all elements, points, and their location for future use.
 4. Adding isometry of roof and different option and styles after GPT work is done and manipulating the grid.
 5. Remove everything unused and structure folder and files - issue V0.0.1
