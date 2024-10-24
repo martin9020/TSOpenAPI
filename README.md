@@ -10,3 +10,13 @@ https://developer.tekla.com/doc/tekla-structures/2024/tekla-structures-20398
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPISelfLearningExercises/tree/master/2024_APISelfLearningExercises
 
 https://github.com/TrimbleSolutionsCorporation/TSOpenAPIExamples/tree/2024
+
+I have found a way for better manipulating the grid with Chat GPT here:
+https://chatgpt.com/share/671a919d-8bac-8004-a90c-2e822e3c4793
+Need to update code and make it to work.
+
+1. Whats need doing:
+Get and process the .clm and other attribute files for pre-saved settings
+2. Adding the option to choose a profile for columss, beams overrite the settings if chosen this option.
+3. Manipulate the grid option. -removes for() cycles and adds dictionary - saves all elements, points, and their location for future use.
+4. Adding isometry of roof and different option and styles after manipulating the grid.
